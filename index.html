@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Electronic Record System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('stanne.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .login-card {
+      max-width: 400px;
+      margin: auto;
+      padding: 2rem;
+      margin-top: 10vh;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .system-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .system-subtitle {
+      color: #6c757d;
+    }
+    .form-footer a {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="text-center mb-4">
+      <div class="system-title">Electronic Record System</div>
+      <div class="system-subtitle">BSN-2E</div>
+    </div>
+    <form onsubmit="handleLogin(event)">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <div class="form-footer mt-3 text-center">
+      <a data-bs-toggle="modal" data-bs-target="#registerModal">Create an Account</a> |
+      <a href="#" onclick="alert('Please contact the admin.')">Forget Password?</a>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form onsubmit="handleRegister(event)">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registerModalLabel">Register</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="registerUsername" class="form-label">Username</label>
+              <input type="text" id="registerUsername" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="registerPassword" class="form-label">Password</label>
+              <input type="password" id="registerPassword" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success w-100">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
+
+      if (!accounts[username]) {
+        alert('Account not found.');
+        return;
+      }
+
+      if (accounts[username].password !== password) {
+        alert('Incorrect password.');
+        return;
+      }
+
+      localStorage.setItem('userId', username);
+      window.location.href = 'patient_list.html';
+    }
+
+    function handleRegister(event) {
+      event.preventDefault();
+      const username = document.getElementById('registerUsername').value.trim();
+      const password = document.getElementById('registerPassword').value.trim();
+      const accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
+
+      if (accounts[username]) {
+        alert('Username already exists!');
+        return;
+      }
+
+      accounts[username] = { password };
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+      alert('Account created! You can now log in.');
+      const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+      registerModal.hide();
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
