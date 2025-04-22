@@ -56,6 +56,13 @@
       background-color: rgb(0, 0, 0);
       background-color: rgba(0, 0, 0, 0.4);
     }
+
+    #viewPatientFields span {
+      display: inline-block;
+      margin-left: 10px;
+      font-weight: normal;
+      color: #333;
+    }
   
     /* Modal content */
     .modal-content {
@@ -293,49 +300,194 @@
           <button type="submit" class="btn btn-success">Add Patient</button>
         </div>
       </form>
+    </div>
+  </div>
 
-      <!-- Patient Details Modal -->
-      <div id="patientDetailModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-    
-          <!-- Tab navigation -->
-          <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'viewChart')">View Chart</button>
-            <button class="tablinks" onclick="openTab(event, 'editChart')">Edit Chart</button>
-          </div>
 
-          <!-- Tab content for View Chart -->
-          <div id="viewChart" class="tabcontent">
-            <h2>Patient Information</h2>
-            <p><strong>Name:</strong> <span id="patientName"></span></p>
-            <p><strong>Age:</strong> <span id="patientAge"></span></p>
-            <p><strong>Room Number:</strong> <span id="patientRoom"></span></p>
-            <p><strong>Diagnosis</strong> <span id="viewDiagnosis"></span></p>
-            <!-- Add other fields here -->
-          </div>
+  <!-- Patient Details Modal -->
+  <div id="patientDetailModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
 
-          <!-- Tab content for Edit Chart -->
-          <div id="editChart" class="tabcontent">
-            <h2>Edit Patient Information</h2>
-            <label for="editName">Name:</label>
-            <input type="text" id="editName" /><br><br>
-      
-            <label for="editAge">Age:</label>
-            <input type="number" id="editAge" /><br><br>
+      <!-- Tab navigation -->
+      <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'viewChart')">View Chart</button>
+        <button id="editTabBtn" class="tablinks" onclick="openTab(event, 'editChart')">Edit Chart</button> <!-- Edit button initially visible only for owners -->
+      </div>
 
-            <label for="editRoom">Room Number:</label>
-            <input type="text" id="editRoom" /><br><br>
-
-            <label for="editDiagnosis">Diagnosis:</label>
-            <input type="text" id="editDiagnosis" /><br><br>
-
-            <!-- Add more editable fields here -->
-
-            <button onclick="saveChanges()">Save Changes</button>
-          </div>
+      <!-- Tab content for View Chart -->
+      <div id="viewChart" class="tabcontent">
+        <h4 class="mb-4 text-primary">Patient Information</h4>
+        <div class="row g-3" id="viewPatientFields">
+          <div class="col-md-6"><strong>Full Name:</strong> <span id="view_name"></span></div>
+          <div class="col-md-6"><strong>Room Number:</strong> <span id="view_room"></span></div>
+          <div class="col-md-12"><strong>Address:</strong> <span id="view_address"></span></div>
+          <div class="col-md-4"><strong>Age:</strong> <span id="view_age"></span></div>
+          <div class="col-md-4"><strong>Date of Birth:</strong> <span id="view_dob"></span></div>
+          <div class="col-md-4"><strong>Gender:</strong> <span id="view_gender"></span></div>
+          <div class="col-md-6"><strong>Family History:</strong> <span id="view_family_history"></span></div>
+          <div class="col-md-6"><strong>Attending Physician:</strong> <span id="view_attending_physician"></span></div>
+          <div class="col-md-6"><strong>Admission Date:</strong> <span id="view_admission_date"></span></div>
+          <div class="col-md-6"><strong>Admitting Physician:</strong> <span id="view_admitting_physician"></span></div>
+          <div class="col-md-12"><strong>Admission Diagnosis:</strong> <span id="view_admission_diagnosis"></span></div>
+          <div class="col-md-6"><strong>Home Medication:</strong> <span id="view_home_medication"></span></div>
+          <div class="col-md-6"><strong>Discontinued Medication:</strong> <span id="view_discontinued_medication"></span></div>
+          <div class="col-md-6"><strong>Level of Care:</strong> <span id="view_level_of_care"></span></div>
+          <div class="col-md-6"><strong>Medical History:</strong> <span id="view_medical_history"></span></div>
+          <div class="col-md-6"><strong>Active Medication:</strong> <span id="view_active_medication"></span></div>
+          <div class="col-md-6"><strong>Allergies:</strong> <span id="view_allergies"></span></div>
+          <div class="col-md-4"><strong>Religion:</strong> <span id="view_religion"></span></div>
+          <div class="col-md-4"><strong>Nationality:</strong> <span id="view_nationality"></span></div>
+          <div class="col-md-4"><strong>Marital Status:</strong> <span id="view_marital_status"></span></div>
+          <div class="col-md-6"><strong>Spouse:</strong> <span id="view_spouse"></span></div>
+          <div class="col-md-6"><strong>Emergency Contact Number:</strong> <span id="view_emergency_contact"></span></div>
+          <div class="col-md-6"><strong>Email:</strong> <span id="view_email"></span></div>
+          <div class="col-md-6"><strong>Occupation:</strong> <span id="view_occupation"></span></div>
+          <div class="col-md-6"><strong>Smoking Status:</strong> <span id="view_smoking_status"></span></div>
+          <div class="col-md-6"><strong>Student Nurse:</strong> <span id="view_student_nurse"></span></div>
         </div>
       </div>
+      
+
+      <!-- Tab content for Edit Chart -->
+      <div id="editChart" class="tabcontent">
+        <h4 class="mb-4 text-primary">Edit Patient Record</h4>
+        <div class="row g-3" id="editPatientFormFields">
+          <div class="col-md-6">
+            <label for="edit_name" class="form-label">Full Name</label>
+            <input type="text" id="edit_name" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_room" class="form-label">Room Number</label>
+            <input type="text" id="edit_room" class="form-control">
+          </div>
+          <div class="col-md-12">
+            <label for="edit_address" class="form-label">Address</label>
+            <input type="text" id="edit_address" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="edit_age" class="form-label">Age</label>
+            <input type="number" id="edit_age" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="edit_dob" class="form-label">Date of Birth</label>
+            <input type="date" id="edit_dob" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="edit_gender" class="form-label">Gender</label>
+            <select id="edit_gender" class="form-select">
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_family_history" class="form-label">Family History</label>
+            <input type="text" id="edit_family_history" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_attending_physician" class="form-label">Attending Physician</label>
+            <input type="text" id="edit_attending_physician" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_admission_date" class="form-label">Admission Date</label>
+            <input type="date" id="edit_admission_date" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_admitting_physician" class="form-label">Admitting Physician</label>
+            <input type="text" id="edit_admitting_physician" class="form-control">
+          </div>
+          <div class="col-md-12">
+            <label for="edit_admission_diagnosis" class="form-label">Admission Diagnosis</label>
+            <textarea id="edit_admission_diagnosis" class="form-control"></textarea>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_home_medication" class="form-label">Home Medication</label>
+            <input type="text" id="edit_home_medication" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_discontinued_medication" class="form-label">Discontinued Medication</label>
+            <input type="text" id="edit_discontinued_medication" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_level_of_care" class="form-label">Level of Care</label>
+            <input type="text" id="edit_level_of_care" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_medical_history" class="form-label">Medical History</label>
+            <textarea id="edit_medical_history" class="form-control"></textarea>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_active_medication" class="form-label">Active Medication</label>
+            <input type="text" id="edit_active_medication" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_allergies" class="form-label">Allergies</label>
+            <input type="text" id="edit_allergies" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="edit_religion" class="form-label">Religion</label>
+            <select id="edit_religion" class="form-select">
+              <option value="">Select</option>
+              <option value="Christianity">Roman Catholic</option>
+              <option value="Islam">Islam</option>
+              <option value="Hinduism">Jehova's Witness</option>
+              <option value="Buddhism">Iglesia Ni Cristo</option>
+              <option value="None">Born Again Christian</option>
+              <option>Protestant</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="edit_nationality" class="form-label">Nationality</label>
+            <input type="text" id="edit_nationality" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="edit_marital_status" class="form-label">Marital Status</label>
+            <select id="edit_marital_status" class="form-select">
+              <option value="">Select</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_spouse" class="form-label">Spouse</label>
+            <input type="text" id="edit_spouse" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_emergency_contact" class="form-label">Emergency Contact Number</label>
+            <input type="tel" id="edit_emergency_contact" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_email" class="form-label">Email</label>
+            <input type="email" id="edit_email" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_occupation" class="form-label">Occupation</label>
+            <input type="text" id="edit_occupation" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_smoking_status" class="form-label">Smoking Status</label>
+            <input type="text" id="edit_smoking_status" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="edit_student_nurse" class="form-label">Student Nurse</label>
+            <input type="text" id="edit_student_nurse" class="form-control">
+          </div>
+        </div>
+      
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="saveChanges()">Save Changes</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
 
   <script>
     // Function to open a specific tab
@@ -356,43 +508,79 @@
     }
 
     function getPatientData(patientId) {
+      const userKey = selectedUser || localStorage.getItem("userId"); // fallback to current user
       const accounts = getAccounts();
-      const patients = accounts[selectedUser]?.patients || [];
-
-      // Find patient by some unique ID or index
-      return patients.find(p => p.id === patientId || p.name === patientId); // Adjust based on how you identify patients
+      const patients = accounts[userKey]?.patients || [];
+      return patients.find(p => p.id === patientId);
     }
+
+
 
     // Function to open the patient modal
     function viewChart(patientId) {
-      // Assuming you have a function that fetches the patient data from storage
       const patient = getPatientData(patientId);
+      if (!patient) return alert("Patient not found!");
 
-      // Update the "View Chart" tab with patient info
-      document.getElementById("viewName").textContent = patient.name;
-      document.getElementById("viewAge").textContent = patient.age;
-      document.getElementById("viewRoom").textContent = patient.room;
-      document.getElementById("viewDiagnosis").textContent = patient.diagnosis;
-      // Populate more fields as needed
+      function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (isNaN(date)) return value;
+        return date.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+      }
 
-      // Open the "View Chart" tab
-      document.querySelector(".tablinks[onclick*='viewChart']").click();
+      for (const key in patient) {
+        const el = document.getElementById(`view_${key}`);
+        if (el) {
+          const val = patient[key];
+          if (key.includes("date") || key === "dob") {
+            el.textContent = formatDate(val);
+          } else {
+            el.textContent = val?.trim() ? val : "—";
+          }
+        }
+      }
+
+      document.getElementById("patientDetailModal").style.display = "block";
+
+      if (selectedUser === currentUser) {
+        document.getElementById("editTabBtn").style.display = "inline";
+      } else {
+        document.getElementById("editTabBtn").style.display = "none";
+      }
+
+      openTab(
+        { currentTarget: document.querySelector(".tablinks[onclick*='viewChart']") },
+        "viewChart"
+      );
     }
+
+
+
+
 
     function editChart(patientId) {
-      // Assuming you have a function that fetches the patient data from storage
-      const patient = getPatientData(patientId);
+      const accounts = getAccounts();
+      const patients = accounts[selectedUser]?.patients || [];
+      const index = patients.findIndex(p => p.id === patientId);
+      if (index === -1) return alert("Patient not found!");
 
-      // Populate the "Edit Chart" form with the patient info
-      document.getElementById("editName").value = patient.name;
-      document.getElementById("editAge").value = patient.age;
-      document.getElementById("editRoom").value = patient.room;
-      document.getElementById("editDiagnosis").value = patient.diagnosis;
-      // Populate more fields as needed
+      selectedPatientIndex = index;
+      const patient = patients[index];
 
-      // Open the "Edit Chart" tab
-      document.querySelector(".tablinks[onclick*='editChart']").click();
+      // Populate the new fields
+      for (const key in patient) {
+        const field = document.getElementById(`edit_${key}`);
+        if (field) field.value = patient[key];
+      }
+
+      document.getElementById("patientDetailModal").style.display = "block";
+      openTab({ currentTarget: document.querySelector(".tablinks[onclick*='editChart']") }, "editChart");
     }
+
 
     // Function to close the modal
     function closeModal() {
@@ -402,18 +590,17 @@
     // Function to save changes made to the patient
     function saveChanges() {
       const accounts = getAccounts();
-      const patient = accounts[selectedUser].patients[selectedPatientIndex]; // Assuming you store the patient index
+      const patient = accounts[selectedUser].patients[selectedPatientIndex];
 
-      // Update the patient's information from the edit form
-      patient.name = document.getElementById('editName').value;
-      patient.age = document.getElementById('editAge').value;
-      patient.roomNumber = document.getElementById('editRoom').value;
-      // Update other fields as necessary
+      for (const key in patient) {
+        const field = document.getElementById(`edit_${key}`);
+        if (field) {
+          patient[key] = field.value;
+        }
+      }
 
-      // Save back to localStorage or state
       saveAccounts(accounts);
-
-      // Optionally, close the modal after saving
+      renderPatientList(accounts[selectedUser].patients);
       closeModal();
     }
 
@@ -531,29 +718,24 @@
       const data = Object.fromEntries(formData.entries());
 
       const newPatient = {
-       id: Date.now(), // unique ID
+        id: Date.now(), // unique ID
         name: formData.get("name"),
         age: formData.get("age"),
         room: formData.get("room"),
         diagnosis: formData.get("admission_diagnosis"),
-        // ... include other fields here
+        ...data
       };
 
-  
       const accounts = getAccounts();
       if (!accounts[selectedUser].patients) accounts[selectedUser].patients = [];
-  
-      accounts[selectedUser].patients.push({
-        name: data.name,
-        diagnosis: data.admission_diagnosis,
-        date: data.admission_date,
-        ...data
-      });
-  
+
+      accounts[selectedUser].patients.push(newPatient);
+
       saveAccounts(accounts);
       renderPatientList(accounts[selectedUser].patients);
       closePatientForm();
     }
+
   
     function renderPatientList(patients) {
       const table = document.getElementById("patientTable");
@@ -562,10 +744,10 @@
       patients.forEach((p, i) => {
         const isCurrentUser = selectedUser === currentUser;
         const actionButtons = isCurrentUser
-          ? `<button class="btn btn-danger btn-sm" onclick="removePatient(${i})">Remove</button>
-             <button class="btn btn-warning btn-sm" onclick="editChart(${i})">Edit Chart</button>
-             <button class="btn btn-info btn-sm" onclick="viewChart(${i})">View Chart</button>`
-          : `<button class="btn btn-info btn-sm" onclick="viewChart(${i})">View Chart</button>`;
+          ? `<button class="btn btn-danger btn-sm" onclick="removePatient(${JSON.stringify(p.id)})">Remove</button>
+             <button class="btn btn-warning btn-sm" onclick="editChart(${JSON.stringify(p.id)})">Edit Chart</button>
+             <button class="btn btn-info btn-sm" onclick="viewChart(${JSON.stringify(p.id)})">View Chart</button>`
+          : `<button class="btn btn-info btn-sm" onclick="viewChart(${JSON.stringify(p.id)})">View Chart</button>`;
   
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -582,38 +764,80 @@
     // Function to view a patient's chart
     function viewChart(patientId) {
       const patient = getPatientData(patientId);
+      console.log("Viewing patient ID:", patientId);
+      console.log("Patient found:", patient);
+
       if (!patient) return alert("Patient not found!");
 
-      document.getElementById("patientName").textContent = patient.name;
-      document.getElementById("patientAge").textContent = patient.age;
-      document.getElementById("patientRoom").textContent = patient.room;
-      document.getElementById("viewDiagnosis").textContent = patient.diagnosis;
+      for (const key in patient) {
+        const el = document.getElementById(`view_${key}`);
+        if (el) el.textContent = patient[key] || '';
+      }
 
-      // Show modal
       document.getElementById("patientDetailModal").style.display = "block";
-      openTab({ currentTarget: document.querySelector(".tablinks[onclick*='viewChart']") }, "viewChart");
+
+      if (selectedUser === currentUser) {
+        document.getElementById("editTabBtn").style.display = "inline";
+      } else {
+        document.getElementById("editTabBtn").style.display = "none";
+      }
+
+      openTab(
+        { currentTarget: document.querySelector(".tablinks[onclick*='viewChart']") },
+        "viewChart"
+      );
     }
+
+
+    let selectedPatientIndex = null; // Declare this globally at the top of your script
 
     function editChart(patientId) {
-      const patient = getPatientData(patientId);
-      if (!patient) return alert("Patient not found!");
+      const accounts = getAccounts();
+      const patients = accounts[selectedUser]?.patients || [];
+      const index = patients.findIndex(p => p.id === patientId);
+      if (index === -1) return alert("Patient not found!");
 
-      document.getElementById("editName").value = patient.name;
-      document.getElementById("editAge").value = patient.age;
-      document.getElementById("editRoom").value = patient.room;
-      document.getElementById("editDiagnosis").value = patient.diagnosis;
+      selectedPatientIndex = index;
+      const patient = patients[index];
+
+      // Fill all fields that exist in the patient object and match with edit_ IDs
+      for (const key in patient) {
+        const field = document.getElementById(`edit_${key}`);
+        if (field) {
+          if (field.tagName === "SELECT") {
+            field.value = patient[key] || "";
+          } else if (field.tagName === "TEXTAREA") {
+            field.value = patient[key] || "";
+          } else {
+            field.value = patient[key] || "";
+          }
+        }
+      }
 
       document.getElementById("patientDetailModal").style.display = "block";
-      openTab({ currentTarget: document.querySelector(".tablinks[onclick*='editChart']") }, "editChart");
+      openTab(
+        { currentTarget: document.querySelector(".tablinks[onclick*='editChart']") },
+        "editChart"
+      );
     }
+
   
-    function removePatient(index) {
+    function removePatient(patientId) {
       const accounts = getAccounts();
       const patients = accounts[selectedUser].patients;
-      patients.splice(index, 1);
+      accounts[selectedUser].patients = patients.filter(p => p.id !== patientId);
       saveAccounts(accounts);
       renderPatientList(accounts[selectedUser].patients);
     }
+
+    function checkEditPermission(patientOwnerId, loggedInUserId) {
+      const editButton = document.getElementById('editBtn');
+
+      if (patientOwnerId === loggedInUserId) {
+        editButton.style.display = 'block'; // Show Edit button if they are the owner
+      }
+    }
+
   
     function editProfile() {
       const accounts = getAccounts();
@@ -654,16 +878,6 @@
     function logout() {
       localStorage.removeItem("userId");
       window.location.href = "index.html";
-    }
-  
-    // Dummy data if needed
-    if (!localStorage.getItem("accounts")) {
-      const sampleData = {
-        alice: { name: "Alice", image: "", patients: [] },
-        bob: { name: "Bob", image: "", patients: [] },
-        charlie: { name: "Charlie", image: "", patients: [] }
-      };
-      localStorage.setItem("accounts", JSON.stringify(sampleData));
     }
   
     renderDashboard();
